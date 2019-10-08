@@ -1,0 +1,193 @@
+<!doctype html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>Quick Pick</title>
+
+</head>
+<body style="text-align: center; background-color: #8C3378; color: #ffffff">
+  <h1><a href = "JoesHotdogs.html" style="text-decoration: none; color: #A5C8FF"> Lottery!</a></h1>
+  <p>(click above to see Joe's Hotdogs!)</p>
+  <p>All five numbers are listed and last number is always the lucky ball</p>
+  <p>Unsorted Print:</p>
+  <p id = "unsortedPrint"></p>
+
+  <p>Sorted Print:</p>
+  <p id = "sortedPrint"></p>
+
+
+  <!--<input type = "form" id = "firstFive" placeholder="First Five Numbers" >
+  </br>
+  <input type = "form" id = "luckyBall" placeholder="Lucky Ball Number" >
+  <input type = "submit" id = "Submit" value = "Submit" onclick="compare()">-->
+
+
+  
+  <script>
+    function print(passedArray)
+    {
+      values = ""
+      for(i = 0; i < passedArray.length; i++)
+        values +=  passedArray[i] + ", ";
+      return values;
+     
+    }
+
+
+    function printLuckyBall()
+    {
+      return "" + luckyBall;
+    }
+
+    function sort(passedArray)
+    {
+      for(i = 0; i < passedArray.length-1; i++)
+      {
+        if(passedArray[i] > passedArray[i+1])
+        {
+          temp = passedArray[i+1];
+          passedArray[i+1] = passedArray[i];
+          passedArray[i] = temp;
+          i = -1;
+        }
+      }
+
+      return passedArray;
+    } 
+
+
+    val1 = Math.random() * 47+1;
+    val1 = Math.round(val1);
+
+    val2 = Math.random() * 47+1;
+    val2 = Math.round(val2);
+
+    val3 = Math.random() * 47+1;
+    val3 = Math.round(val3);
+
+    val4 = Math.random() * 47+1;
+    val4 = Math.round(val4);
+
+    val5 = Math.random() * 47+1;
+    val5 = Math.round(val5);
+
+    luckyBall = Math.random() * 17+1;
+    luckyBall = Math.round(luckyBall);
+
+    ballsDrawn = [val1, val2, val3, val4, val5];
+
+    document.getElementById("unsortedPrint").innerHTML = print(ballsDrawn) + printLuckyBall();
+    sort(ballsDrawn);
+    document.getElementById("sortedPrint").innerHTML = print(ballsDrawn) + printLuckyBall();
+</script>
+
+
+  <input type = "form" id = "firstFive" placeholder="First Five Numbers" >
+  <p></p>
+  <input type = "form" id = "luckyBallGuess" placeholder="Lucky Ball Number" >
+  <p></p>
+  <input type = "submit" id = "Submit" value = "Submit" onclick="compare()">
+  <p id = "compare"></p>
+  <p id = "payout"></p>
+
+
+
+  <script>
+    function compare()
+    {
+      numCorrect = compareFirstFive();
+      luckyBool = compareLuckyBall();
+
+      if(luckyBool)
+        document.getElementById("compare").innerHTML = "You got " + numCorrect + " correct and you got the lucky ball!"
+      else
+        document.getElementById("compare").innerHTML = "You got " + numCorrect + " correct and you did not get the lucky ball. The lucky ball was " + luckyBall + " and the other numbers were " + print(ballsDrawn);
+      payout()
+
+
+    }
+
+
+    function compareFirstFive()
+    {
+      firstFiveCorrect = 0;
+      arr = getArrayFromText();
+      //arr = sort(arr);
+      ballsDrawn = sort(ballsDrawn);
+      temp1 = ballsDrawn;
+      temp2 = arr;
+      for(i = 0; i < 5; i++)
+        for(j = i; j < 5; j++)
+          if(temp1[i] == temp2[j] && temp[i] != 0)
+          {
+            firstFiveCorrect ++;
+            //temp[i] = 0;
+            //temp[j] = 0;
+            //i = 0;
+            break;
+          }
+
+      return firstFiveCorrect;
+    }
+
+
+    function compareLuckyBall()
+    {
+      luckyBallGuess = parseInt(document.getElementById("luckyBallGuess").value);
+
+      if(luckyBallGuess == luckyBall)
+        return true;
+
+      else
+        return false;
+
+
+    }
+
+    function getArrayFromText()
+    {
+      stringNumbers = document.getElementById("firstFive").value;
+      arr = new Array(5);
+      for(i = 1; i <= arr.length; i++)
+      {
+        arr[i-1] = parseInt(stringNumbers);
+        if(arr[i-1] > 9)
+        stringNumbers = stringNumbers.substring(3);
+      else
+        stringNumbers = stringNumbers.substring(2);
+      }
+      return arr;
+    }   
+
+
+    function payout()
+    { 
+      var luckyBallPayout = [4, 6, 25, 150, 5000, 7000]
+      var noLuckyBallPayout = [0, 0, 3, 20, 200, 25000]
+      correct = compareFirstFive();
+
+      if(compareLuckyBall())
+      {
+        if(correct == 5)
+          document.getElementById("payout").innerHTML =  "You won $" + luckyBallPayout[correct] + " a week for life!";
+        else
+          document.getElementById("payout").innerHTML =  "You won $" + luckyBallPayout[correct] + "!";
+      }
+
+      else
+      {
+        if(correct == 5)
+          document.getElementById("payout").innerHTML =  "You won $" + noLuckyBallPayout[correct] + " a year for life!";   
+        else
+          document.getElementById("payout").innerHTML =  "You won $" + noLuckyBallPayout[correct] + "!";             
+      }
+    }
+
+  </script>
+
+
+</body>
+
+
+
+</html>

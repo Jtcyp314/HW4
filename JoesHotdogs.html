@@ -1,0 +1,160 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="utf-8">
+<title>Joe's Hotdogs</title>
+
+<script type="text/javascript">
+    class FoodItem
+  {
+    construtor()
+    {
+    }
+
+    setName(name)
+    {
+      this.name = name;
+    }
+    getName()
+    {
+      return this.name;
+    }
+
+    setQuantity(quantity)
+    {
+      this.quantity = quantity;
+    }
+
+    getQuantity()
+    {
+      return this.quantity;
+    }
+
+    setPrice(price)
+    {
+      this.price = price;
+    }
+    getPrice()
+    {
+      return this.price;
+    }
+
+  }
+</script>
+</head>
+
+<body style="text-align: center; background-color: #000000; color: #ffffff">
+<h1><a href = "quickPick.html" style = "color: #ff0000; text-decoration: none;">Welcome to Joe's Hot Dogs</a></h1>
+<p>(click above to see the Lottery!)</p>
+
+<p id = "greeting">Below are our items, prices, and current quantities. 
+Please fill out the form below and press order. Your total will be printed and you'll be on your way </br>
+(Plus there is a 10% discount if you order online and your subtotal is at least $20)</p>
+<p id = "foodOptions"></p>
+
+<script>
+
+  hotDog = new FoodItem();
+  hotDog.setName("Hot Dog");
+  hotDog.setQuantity(100);
+  hotDog.setPrice(3.25);
+
+  frenchFries = new FoodItem();
+  frenchFries.setName("French Fries");
+  frenchFries.setQuantity(700);
+  frenchFries.setPrice(2.00);
+
+  drinks = new FoodItem();
+  drinks.setName("Drinks");
+  drinks.setQuantity(1000);
+  drinks.setPrice(1.50);  
+
+
+  var food = [hotDog, frenchFries, drinks];
+
+  //test print
+  for(i = 0; i < 3; i++)
+  {
+    document.write(food[i].getName() + ": " + food[i].getQuantity() + " left at $" + food[i].getPrice().toFixed(2) + " each.</br>");
+  }
+
+
+</script>
+
+  <p id= "hotDogOrder">Hot Dogs:  
+    <input type = "form" id = "userOrderHotDog" placeholder="Quantity of Hot Dogs">
+  </p>
+
+  <p id= "frenchFriesOrder">French Fries:  
+    <input type = "form" id = "userOrderFrenchFries" placeholder="Quantity of French Fries">
+  </p>
+
+  <p id= "drinksOrder">Drinks:  
+    <input type = "form" id = "userOrderDrinks" placeholder="Quantity of Drinks">
+  </p>
+
+  <input type = "submit" id = "OrderButton" value = "Order" onclick="orderFood()">
+
+  <p id = "printCustomerOrderSubtotal"></p>
+  <p id = "printCustomerOrderTotal"></p>
+  <p id = "newQuantities"></p>
+
+  <script>
+    function orderFood()
+    {
+      var numHotDog = parseInt(document.getElementById("userOrderHotDog").value);
+      hotDog.setQuantity(hotDog.getQuantity() - numHotDog);
+
+      var numFrenchFries = parseInt(document.getElementById("userOrderFrenchFries").value);
+      frenchFries.setQuantity(frenchFries.getQuantity() - numFrenchFries);
+
+      var numDrinks = parseInt(document.getElementById("userOrderDrinks").value);
+      drinks.setQuantity(drinks.getQuantity() - numDrinks);
+
+      subtotal = numDrinks*drinks.getPrice() + numFrenchFries*frenchFries.getPrice() + numHotDog*hotDog.getPrice();
+      subtotal = subtotal.toFixed(2);
+
+      document.getElementById("printCustomerOrderSubtotal").innerHTML = "Your subtotal is: $" + subtotal;
+      if(subtotal >= 20)
+      {
+        getFinalOrderPriceDiscount(subtotal);
+      }
+      else
+        getFinalOrderPrice(subtotal);
+
+      printNewQuantities();
+    }
+
+    function printNewQuantities()
+    {
+      foodValues = "";
+      for(i = 0; i < 3; i++)
+      {
+        foodValues += food[i].getName() + ": " + food[i].getQuantity() + " left at $" + food[i].getPrice().toFixed(2) + " each.</br>"; 
+        document.getElementById("newQuantities").innerHTML =  foodValues;
+      }
+        
+    }
+    
+
+    function getFinalOrderPrice(subtotal)
+    {
+      final = subtotal * 1.0625;
+      final = final.toFixed(2);
+      document.getElementById("printCustomerOrderTotal").innerHTML = "Your total is: $" + final;
+    }
+
+    function getFinalOrderPriceDiscount(subtotal)
+    {
+      final = subtotal * .90;
+      final = final* 1.0625
+      final = final.toFixed(2);
+      document.getElementById("printCustomerOrderTotal").innerHTML = "Your total is: $" + final;
+    }
+
+
+  </script>
+
+
+</body>
+</html>
